@@ -1,0 +1,7 @@
+**/.vscode/**/*.{js,jsx,ts}
+
+**/browsersync/**/*.{js,jsx,ts}
+
+**/node_modules/**/*.{js,jsx,ts}
+
+**/dist/**/*.{js,jsx,ts}
