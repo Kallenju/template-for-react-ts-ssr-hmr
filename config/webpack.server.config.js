@@ -7,7 +7,7 @@ const ReactRefreshPlugin = require('@pmmmwh/react-refresh-webpack-plugin');
 const { NODE_ENV } = process.env;
 
 module.exports = {
-  entry: path.resolve(__dirname, '../src/server/server.ts'),
+  entry: path.resolve(__dirname, '../src/server/server.tsx'),
 
   output: {
     path: path.resolve(__dirname, '../dist/server'),

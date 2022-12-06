@@ -1,7 +1,7 @@
 {
   "name": "template-for-react-ts-ssr-hmr",
-  "version": "1.0.0",
-  "description": "Template for a project with React, TypeScript, SSR, HMR",
+  "version": "1.0.1",
+  "description": "Template for a project with React, TypeScript, SSR, HMR. Template imply using CSS Modules and Stylus. But it can be easily changed.",
   "repository": {
     "type": "git",
     "url": "https://github.com/Kallenju/template-for-react-ts-ssr-hmr.git"
