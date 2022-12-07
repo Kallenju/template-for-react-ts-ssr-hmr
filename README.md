@@ -9,3 +9,11 @@ npm install
 
 npm run dev
 ```
+
+## What is used in the program?
+
+### Hot module replacement
+
+- react-refresh-webpack-plugin
+- React Fast Refresh
+- Webpack modules and plugins (webpack-dev-middleware, webpack-hot-middleware, webpack.HotModuleReplacementPlugin)
