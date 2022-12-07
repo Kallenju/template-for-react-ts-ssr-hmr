@@ -4,7 +4,7 @@ Template for a project with React, TypeScript, SSR, HMR. Template imply using CS
 
 ## Quick start: 
 
-For copy the template to an empty local folder without creating of a repo or to an existing repo use the following:
+To copy the template in an empty local folder without creating of a repo or in an existing repo use the following:
 
 ```shell
 npx degit Kallenju/template-for-react-ts-ssr-hmr
