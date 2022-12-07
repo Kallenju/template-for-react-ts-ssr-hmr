@@ -10,7 +10,7 @@ npm install
 npm run dev
 ```
 
-## What is used in the program?
+## What is used in the template?
 
 ### Hot module replacement
 
