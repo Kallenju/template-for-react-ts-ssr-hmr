@@ -2,7 +2,15 @@
 
 Template for a project with React, TypeScript, SSR, HMR. Template imply using CSS Modules and Stylus. But it can be easily changed.
 
-## Quick start:
+## Quick start: 
+
+For copy the template to an empty local folder without creating of a repo or to an existing repo use the following:
+
+```shell
+npx degit Kallenju/template-for-react-ts-ssr-hmr
+```
+
+Install packages and run development servers: 
 
 ```shell
 npm install
