@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import styles from './header.module.styl';
 
-export default function Header(): React.ReactElement {
+export function Header(): React.ReactElement {
   const [count, setCount] = useState(0);
   function handleClick() {
     setCount(count + 1);

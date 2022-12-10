@@ -5,7 +5,10 @@ const webpack = require('webpack');
 const ReactRefreshPlugin = require('@pmmmwh/react-refresh-webpack-plugin');
 const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
 
-const { NODE_ENV } = globalThis.process.env;
+const { NODE_ENV } = process.env;
+const MODULE_CODE_REGEXP = /\.[tj]sx?$/;
+const MODULE_STYLES_REGEXP = /\.module\.styl$/;
+const GLOBAL_STYLES_REGEXP = /\.global\.styl$/;
 
 module.exports = {
   entry: [
@@ -21,7 +24,7 @@ module.exports = {
   module: {
     rules: [
       {
-        test: /\.[tj]sx?$/,
+        test: MODULE_CODE_REGEXP,
         use: [
           {
             loader: 'babel-loader',
@@ -29,7 +32,8 @@ module.exports = {
         ],
       },
       {
-        test: /\.styl$/,
+        test: MODULE_STYLES_REGEXP,
+        exclude: GLOBAL_STYLES_REGEXP,
         use: [
           {
             loader: 'style-loader',
@@ -49,6 +53,20 @@ module.exports = {
                 localIdentName: '[name]__[local]--[hash:base64:5]',
               },
             },
+          },
+          {
+            loader: 'postcss-loader',
+          },
+          {
+            loader: 'stylus-loader',
+          },
+        ],
+      },
+      {
+        test: GLOBAL_STYLES_REGEXP,
+        use: [
+          {
+            loader: 'css-loader',
           },
           {
             loader: 'postcss-loader',
