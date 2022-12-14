@@ -6,6 +6,9 @@ const ReactRefreshPlugin = require('@pmmmwh/react-refresh-webpack-plugin');
 
 const { NODE_ENV } = process.env;
 
+const MODULE_CODE_REGEXP = /\.[tj]sx?$/;
+const STYLES_REGEXP = /.styl$/;
+
 module.exports = {
   entry: path.resolve(__dirname, '../src/server/server.tsx'),
 
@@ -17,7 +20,7 @@ module.exports = {
   module: {
     rules: [
       {
-        test: /\.[tj]sx?$/,
+        test: MODULE_CODE_REGEXP,
         use: [
           {
             loader: 'babel-loader',
@@ -25,7 +28,7 @@ module.exports = {
         ],
       },
       {
-        test: /\.styl$/,
+        test: STYLES_REGEXP,
         use: [
           {
             loader: 'css-loader',
@@ -51,7 +54,14 @@ module.exports = {
 
   plugins:
     NODE_ENV === 'development'
-      ? [new webpack.HotModuleReplacementPlugin(), new ReactRefreshPlugin()]
+      ? [
+          new webpack.HotModuleReplacementPlugin(),
+          new ReactRefreshPlugin({
+            overlay: {
+              sockIntegration: 'whm',
+            },
+          }),
+        ]
       : [],
 
   externals: [webpackNodeExternals()],

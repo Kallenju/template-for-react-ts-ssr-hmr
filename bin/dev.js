@@ -37,7 +37,6 @@ hmrServer.use(
 hmrServer.use(
   webpackDevMiddleware(clientCompiler, {
     publicPath: webpackClientConfig.output.publicPath,
-    serverSideRender: true,
     writeToDisk: true,
     stats: 'errors-only',
   })
@@ -50,20 +49,21 @@ hmrServer.use(
 );
 
 hmrServer.listen(3001, () => {
-  console.log('HMR Server successfully started');
+  console.log('\nHMR Server successfully started on http://localhost:3001\n');
 });
 
 const serverCompiler = webpack(webpackServerConfig);
 
 serverCompiler.run((err) => {
   if (err) {
-    console.log(`Compilation failed:`, err);
+    console.log(`\nCompilation with server config was failed: ${err}\n`);
   }
+
   serverCompiler.watch({}, (err) => {
     if (err) {
-      console.log(`Compilation failed:`, err);
+      console.log(`\nCompilation with server config was failed: ${err}\n`);
     }
-    console.log('Compilation was successfully');
+    console.log('\nCompilation with server config was successful\n');
   });
 
   nodemon({
@@ -75,6 +75,6 @@ serverCompiler.run((err) => {
   });
 
   console.log(
-    '\n!!!Server!!!\nServer started on port http://localhost:3000\n!!!Server!!!\n'
+    '\n!!!Server!!!\nServer started on port http://localhost:3000\n!!!Server!!!'
   );
 });
