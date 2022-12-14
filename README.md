@@ -46,12 +46,6 @@ The `./dist/` folder is the root of the site. It is created by Webpack and conta
 npm run dev
 ```
 
-or
-
-```shell
-npm run build
-```
-
 `./src` contains `App.tsx`, which is the entry point of the React app. It imports components from `./src/shared` and global styles from `./assets/styles/`. `App.tsx` is in turn imported by server (`server.tsx`) and client (`index.tsx`) files in `./src/server/` and `./src/client/`, respectively.
 
 The `app.get()` method in server code (`./src/server/server.tsx`) specifies a callback function that will render to string React component from `App.tsx` and past it in a HTML template (`./src/server/indexTemplate.ts`), whenever there is an HTTP GET request with a path (`/`) relative to the site root.
