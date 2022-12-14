@@ -34,7 +34,7 @@ npm run dev
   - **Layout**
 - **static**
   - **images**
-  - **scripts**
+  - **font**
   - **styles**
 - **types**
 
