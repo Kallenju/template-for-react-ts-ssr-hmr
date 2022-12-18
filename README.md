@@ -46,23 +46,56 @@ The `./dist/` folder is the root of the site. It is created by Webpack and conta
 npm run dev
 ```
 
+### Server-Side Rendering
+
 `./src` contains `App.tsx`, which is the entry point of the React app. It imports components from `./src/shared` and global styles from `./assets/styles/`. `App.tsx` is in turn imported by server (`server.tsx`) and client (`index.tsx`) files in `./src/server/` and `./src/client/`, respectively.
 
 The `app.get()` method in server code (`./src/server/server.tsx`) specifies a callback function that will render to string React component from `App.tsx` and past it in a HTML template (`./src/server/indexTemplate.ts`), whenever there is an HTTP GET request with a path (`/`) relative to the site root.
 
-After the `load` event is fired, the client code `hydrate` obtained React root.
+After the `load` event is fired, the client code `hydrate` obtained React root. The `hydrate` method is used to render React components on the client side. It is similar to `render`, but it will attach event listeners to the existing markup instead of replacing it.
 
-All files in `./src/static/` are copied to the `./dist/client` folder without changes. For example, the `./src/static/images` folder will be copied to `./dist/client/images`. All files in `./src/static` are accessible through the virtual prefix `/static`. For example, the `./src/static/images/raster/favicon/favicon.png` file will be available at the address `http://localhost:3000/static/images/raster/favicon/favicon.png` === `/static/images/raster/favicon/favicon.png`.
+### Hot Module Replacement
 
-Images in `./src/static/images` are optimized by Webpack. For images with `jpeg` or `jpg` or `png` extentions, the `image-minimizer-webpack-plugin` and `sharp` generate a WebP version of the images.
+Hot Module Replacement is one of the most useful features offered by webpack. It allows all kinds of modules or files to be updated at runtime without the need for a full refresh. This includes CSS and JS files, as well as static assets that are part of the dependency graph. When a file is changed, the module is replaced, and the application code is re-executed. During such module replacement a component's state is preserved.
+
+### Typescript checking
 
 After each re-building webpack plugin `fork-ts-checker-webpack-plugin` checks the typescript code for errors.
 
+### Static files
+
+All files in `./src/static/` are copied to the `./dist/client` folder without changes. For example, the `./src/static/images` folder will be copied to `./dist/client/images`. All files in `./src/static` are accessible through the virtual prefix `/static`. For example, the `./src/static/images/raster/favicon/favicon.png` file will be available at the address `http://localhost:3000/static/images/raster/favicon/favicon.png` === `/static/images/raster/favicon/favicon.png`.
+
+### Image optimization
+
+Images in `./src/static/images` are optimized by Webpack. For images with `jpeg` or `jpg` or `png` extentions, the `image-minimizer-webpack-plugin` and `sharp` generate a WebP version of the images.
+
+### Browserslist
+
 The `browserslist` is used by babel and postcss to compile code for the specified browsers. The list of browsers is specified in the `package.json` file.
+
+### Testing
+
+It is possible to write snapshot tests (using `jest` and `react-test-renderer`) and tests for React components (using the `react-testing-library` library).
+
+The template contains a simple tests for the `Header` component. The test is located in the `./src/__tests__/Header.test.tsx` file.
 
 ## What is used in the template?
 
-### Code
+### Server-Side Rendering
+
+- Express server
+- Nodemon
+
+### Hot Module Replacement
+
+- Express server
+- react-refresh-webpack-plugin
+- React Fast Refresh
+- Webpack modules and plugins (webpack-dev-middleware, webpack-hot-middleware)
+- Webpack plugins (webpack.HotModuleReplacementPlugin)
+
+### Code compilation
 
 - Webpack loader (babel-loader)
 - Webpack plugin (fork-ts-checker-webpack-plugin)
@@ -75,25 +108,18 @@ The `browserslist` is used by babel and postcss to compile code for the specifie
 - Webpack loaders (stylus-loader, css-loader, postcss-loader, style-loader)
 - browserslist
 
+### Image Optimization
+
+- Webpack plugin (image-minimizer-webpack-plugin)
+- Sharp
+
 ### Prettier && Linter
 
 - Prettier
 - ESLint
 
-### Hot Module Replacement
+### Testing
 
-- Express server
-- react-refresh-webpack-plugin
-- React Fast Refresh
-- Webpack modules and plugins (webpack-dev-middleware, webpack-hot-middleware)
-- Webpack plugins (webpack.HotModuleReplacementPlugin)
-
-### Server-Side Rendering
-
-- Express server
-- Nodemon
-
-### Image Optimization
-
-- Webpack plugin (image-minimizer-webpack-plugin)
-- Sharp
+- Jest
+- React Test Renderer
+- React Testing Library

@@ -1,0 +1,34 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Header renders correctly 1`] = `
+<header>
+  <h1
+    className="example"
+  >
+    Hello React
+  </h1>
+  <button
+    className="example"
+    onClick={[Function]}
+  >
+    Clicked 
+    0
+     times
+  </button>
+  <picture>
+    <source
+      height="118"
+      srcSet="/static/images/raster/test-image/test-image.webp"
+      type="image/webp"
+      width="637"
+    />
+    <img
+      alt="Test image"
+      className="preview__image"
+      height="118"
+      src="/static/images/raster/test-image/test-image.jpg"
+      width="637"
+    />
+  </picture>
+</header>
+`;
