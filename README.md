@@ -10,7 +10,7 @@ To copy the template in an empty local folder without creating of a repo or in a
 npx degit Kallenju/template-for-react-ts-ssr-hmr
 ```
 
-Install packages and run development servers:
+The `./dist/` folder is the root of the site. It is created by Webpack and contains the result of the build process. To start the development servers, run the following command:
 
 ```shell
 npm install
@@ -19,6 +19,25 @@ npm run dev
 ```
 
 ## Structure of the template
+
+### Structure of the root folder (`./`)
+
+- **\_\_tests\_\_**
+- **bin**
+- **config**
+- **dist**
+- **src**
+
+### Structure of the dist folder (`./dist`)
+
+- **client**
+  - **fonts**
+  - **images**
+  - **styles**
+- **server**
+- **shared**
+  - **Header**
+  - **Layout**
 
 ### Structure of the source folder (`./src`)
 
@@ -39,12 +58,6 @@ npm run dev
 - **types**
 
 ## How it works
-
-The `./dist/` folder is the root of the site. It is created by Webpack and contains the result of the build process:
-
-```shell
-npm run dev
-```
 
 ### Server-Side Rendering
 
