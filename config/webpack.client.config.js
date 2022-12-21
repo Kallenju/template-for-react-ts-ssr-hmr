@@ -1,13 +1,22 @@
 /* eslint-disable no-undef */
 const path = require('path');
+const dotenv = require('dotenv');
+
+dotenv.config({
+  path: path.resolve(__dirname, `../.${process.env.DOTENV}.env`),
+});
+
+const { NODE_ENV = 'production' } = process.env;
+
 const webpack = require('webpack');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const CopyPlugin = require('copy-webpack-plugin');
 const ImageMinimizerPlugin = require('image-minimizer-webpack-plugin');
 const ReactRefreshPlugin = require('@pmmmwh/react-refresh-webpack-plugin');
 const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
+const AssetsPlugin = require('assets-webpack-plugin');
 
-const { NODE_ENV } = process.env;
 const MODULE_CODE_REGEXP = /\.[tj]sx?$/;
 const MODULE_STYLES_REGEXP = /\.module\.styl$/;
 const GLOBAL_STYLES_REGEXP = /\.global\.styl$/;
@@ -15,8 +24,26 @@ const ALL_IMAGES_REGEXP = /\.(png|svg|jpe?g|gif|ico)$/i;
 const TOWEBP_IMAGES_REGEXP = /\.(jpe?g|png)$/i;
 
 const basePlugins = [
-  new CopyPlugin({
-    patterns: [{ from: path.resolve(__dirname, '../src/static') }],
+  new AssetsPlugin({
+    path: path.resolve(__dirname, '../dist'),
+    fullPath: false,
+    filename: 'assetsMap.json',
+    prettyPrint: NODE_ENV === 'development',
+    includeAllFileTypes: false,
+    fileTypes: ['css', 'js'],
+    processOutput(assets) {
+      const output = JSON.stringify(assets);
+
+      process.env.ASSETS_MAP_GENERAL = output;
+
+      return output;
+    },
+  }),
+  new MiniCssExtractPlugin({
+    filename:
+      NODE_ENV === 'development' ? 'main.css' : 'main.[contenthash].css',
+    chunkFilename:
+      NODE_ENV === 'development' ? '[id].css' : '[id].[contenthash].css',
   }),
   new ImageMinimizerPlugin({
     deleteOriginalAssets: false,
@@ -64,6 +91,9 @@ const basePlugins = [
       },
     ],
   }),
+  new CopyPlugin({
+    patterns: [{ from: path.resolve(__dirname, '../src/static') }],
+  }),
 ];
 
 module.exports = {
@@ -73,7 +103,8 @@ module.exports = {
   ],
   output: {
     path: path.resolve(__dirname, '../dist/client'),
-    filename: 'client.js',
+    filename:
+      NODE_ENV === 'development' ? 'client.js' : 'client.[contenthash].js',
     publicPath: 'http://localhost:3001/static',
   },
 
@@ -92,7 +123,10 @@ module.exports = {
         exclude: GLOBAL_STYLES_REGEXP,
         use: [
           {
-            loader: 'style-loader',
+            loader: MiniCssExtractPlugin.loader,
+            options: {
+              emit: true,
+            },
           },
           {
             loader: 'string-replace-loader',
@@ -122,7 +156,10 @@ module.exports = {
         test: GLOBAL_STYLES_REGEXP,
         use: [
           {
-            loader: 'style-loader',
+            loader: MiniCssExtractPlugin.loader,
+            options: {
+              emit: true,
+            },
           },
           {
             loader: 'string-replace-loader',
@@ -157,20 +194,20 @@ module.exports = {
     extensions: ['.js', '.jsx', '.ts', '.tsx', '.json'],
   },
 
-  devtool: NODE_ENV === 'development' ? 'eval' : false,
+  devtool: NODE_ENV === 'development' ? 'eval-source-map' : false,
 
   plugins:
     NODE_ENV === 'development'
       ? [
-          new CleanWebpackPlugin(),
           ...basePlugins,
-          new webpack.HotModuleReplacementPlugin(),
           new ReactRefreshPlugin({
             overlay: {
               sockIntegration: 'whm',
             },
           }),
+          new webpack.HotModuleReplacementPlugin(),
           new ForkTsCheckerWebpackPlugin({ typescript: { mode: 'write-dts' } }),
+          new CleanWebpackPlugin(),
         ]
       : basePlugins,
 

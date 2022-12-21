@@ -1,5 +1,13 @@
 /* eslint-disable no-undef */
 const path = require('path');
+const dotenv = require('dotenv');
+
+dotenv.config({
+  path: path.resolve(__dirname, `../.${process.env.DOTENV}.env`),
+});
+
+const { DEV_SERVER_PORT = 3000, HMR_SERVER_PORT = 3001 } = process.env;
+
 const express = require('express');
 const webpack = require('webpack');
 const [
@@ -15,19 +23,20 @@ const hmrServer = express();
 
 const clientCompiler = webpack(webpackClientConfig);
 
-const allowedOrigins = ['http://localhost:3000', 'http://localhost:3001'];
+const allowedOrigins = [
+  `http://localhost:${DEV_SERVER_PORT}`,
+  `http://localhost:${HMR_SERVER_PORT}`,
+];
 
 hmrServer.use(
   cors({
     origin: function (origin, callback) {
-      // allow requests with no origin
-      // (like mobile apps or curl requests)
       if (!origin) return callback(null, true);
       if (allowedOrigins.indexOf(origin) === -1) {
-        const msg =
+        const message =
           'The CORS policy for this site does not ' +
           'allow access from the specified Origin.';
-        return callback(new Error(msg), false);
+        return callback(new Error(message), false);
       }
       return callback(null, true);
     },
@@ -48,8 +57,10 @@ hmrServer.use(
   })
 );
 
-hmrServer.listen(3001, () => {
-  console.log('\nHMR Server successfully started on http://localhost:3001\n');
+hmrServer.listen(HMR_SERVER_PORT, () => {
+  console.log(
+    `\nHMR Server successfully started on http://localhost:${HMR_SERVER_PORT}\n`
+  );
 });
 
 const serverCompiler = webpack(webpackServerConfig);
@@ -75,6 +86,6 @@ serverCompiler.run((err) => {
   });
 
   console.log(
-    '\n!!!Server!!!\nServer started on port http://localhost:3000\n!!!Server!!!'
+    `\n!!!Server!!!\nServer started on port http://localhost:${DEV_SERVER_PORT}\n!!!Server!!!`
   );
 });

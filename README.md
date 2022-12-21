@@ -56,6 +56,7 @@ npm run dev
   - **fonts**
   - **styles**
 - **types**
+- **views**
 
 ## How it works
 
@@ -63,9 +64,13 @@ npm run dev
 
 `./src` contains `App.tsx`, which is the entry point of the React app. It imports components from `./src/shared` and global styles from `./assets/styles/`. `App.tsx` is in turn imported by server (`server.tsx`) and client (`index.tsx`) files in `./src/server/` and `./src/client/`, respectively.
 
-The `app.get()` method in server code (`./src/server/server.tsx`) specifies a callback function that will render to string React component from `App.tsx` and past it in a HTML template (`./src/server/indexTemplate.ts`), whenever there is an HTTP GET request with a path (`/`) relative to the site root.
+The `app.get()` method in server code (`./src/server/server.tsx`) specifies a callback function that will render to string React component from `App.tsx` and past it in a template (`./src/views/index.tsx`), whenever there is an HTTP GET request with a path (`/`) relative to the site root.
 
-After the `load` event is fired, the client code `hydrate` obtained React root. The `hydrate` method is used to render React components on the client side. It is similar to `render`, but it will attach event listeners to the existing markup instead of replacing it.
+The server code use modern React method `renderToPipeableStream` to render React components to a stream. It is similar to `renderToString`, but it returns a Node.js Readable stream instead of a string. This is useful for sending the rendered HTML to the client in chunks.
+
+The client code `hydrate` obtained React root. The `hydrate` method is used to render React components on the client side. It is similar to `render`, but it will attach event listeners to the existing markup instead of replacing it.
+
+In the `App.tsx` component, `React.Suspense` component and `React.lazy` method can be used to load components asynchronously. The `React.Suspense` component is used to display a fallback component while waiting for the asynchronous component to load. The `React.lazy` function is used to load components asynchronously.
 
 ### Hot Module Replacement
 
@@ -93,12 +98,17 @@ It is possible to write snapshot tests (using `jest` and `react-test-renderer`) 
 
 The template contains a simple tests for the `Header` component. The test is located in the `./src/__tests__/Header.test.tsx` file.
 
+### Dotenv
+
+The `dotenv` package is used to load environment variables from a `.env` file into `process.env`. The `.env` files is located in the root folder of the project.
+
 ## What is used in the template?
 
 ### Server-Side Rendering
 
 - Express server
 - Nodemon
+- Dotenv
 
 ### Hot Module Replacement
 
@@ -107,19 +117,22 @@ The template contains a simple tests for the `Header` component. The test is loc
 - React Fast Refresh
 - Webpack modules and plugins (webpack-dev-middleware, webpack-hot-middleware)
 - Webpack plugins (webpack.HotModuleReplacementPlugin)
+- Dotenv
 
 ### Code compilation
 
 - Webpack loader (babel-loader)
 - Webpack plugin (fork-ts-checker-webpack-plugin)
 - browserslist
+- Dotenv
 
 ### Styles
 
 - Stylus
 - postcss
-- Webpack loaders (stylus-loader, css-loader, postcss-loader, style-loader)
+- Webpack loaders (mini-css-extract-plugin, css-loader, postcss-loader, style-loader)
 - browserslist
+- Dotenv
 
 ### Image Optimization
 
@@ -136,3 +149,4 @@ The template contains a simple tests for the `Header` component. The test is loc
 - Jest
 - React Test Renderer
 - React Testing Library
+- Dotenv

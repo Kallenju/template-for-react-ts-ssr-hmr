@@ -1,15 +1,14 @@
-import express from 'express';
-import React from 'react';
-import ReactDOMServer from 'react-dom/server';
-import App from '../App';
-import indexTemplate from './indexTemplate';
+import express, { Request, Response } from 'express';
+import compress from 'compression';
+import render from './render';
 
 const app = express();
 
-app.use('/static', express.static('./dist/client'));
+app.use(compress());
+app.get('/', (request: Request, response: Response) =>
+  render(request.url, response)
+);
 
-app.get('/', (req, res) => {
-  res.send(indexTemplate(ReactDOMServer.renderToString(<App />)));
-});
+app.use('/static', express.static('./dist/client'));
 
 app.listen(3000);

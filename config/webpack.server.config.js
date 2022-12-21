@@ -1,13 +1,21 @@
 /* eslint-disable no-undef */
 const path = require('path');
+const dotenv = require('dotenv');
+
+dotenv.config({
+  path: path.resolve(__dirname, `../.${process.env.DOTENV}.env`),
+});
+
+const { NODE_ENV = 'production' } = process.env;
+
 const webpackNodeExternals = require('webpack-node-externals');
 const webpack = require('webpack');
 const ReactRefreshPlugin = require('@pmmmwh/react-refresh-webpack-plugin');
 
-const { NODE_ENV } = process.env;
-
 const MODULE_CODE_REGEXP = /\.[tj]sx?$/;
 const STYLES_REGEXP = /.styl$/;
+
+const basePlugins = [];
 
 module.exports = {
   entry: path.resolve(__dirname, '../src/server/server.tsx'),
@@ -55,14 +63,15 @@ module.exports = {
   plugins:
     NODE_ENV === 'development'
       ? [
-          new webpack.HotModuleReplacementPlugin(),
+          ...basePlugins,
           new ReactRefreshPlugin({
             overlay: {
               sockIntegration: 'whm',
             },
           }),
+          new webpack.HotModuleReplacementPlugin(),
         ]
-      : [],
+      : [...basePlugins],
 
   externals: [webpackNodeExternals()],
 

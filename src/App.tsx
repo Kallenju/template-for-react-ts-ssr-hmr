@@ -1,12 +1,17 @@
 import React from 'react';
-import { Layout } from './shared/Layout';
-import { Header } from './shared/Header';
 import './assets/styles/main.global.styl';
+import AssetsMap from './shared/interfaces/AssetsMap';
+import Index from './views/Index';
+import Header from './shared/Header';
 
-export default function App(): React.ReactElement {
+interface AppProps {
+  assetsMap: AssetsMap;
+}
+
+export default function App({ assetsMap }: AppProps): React.ReactElement {
   return (
-    <Layout>
+    <Index assetsMap={assetsMap}>
       <Header />
-    </Layout>
+    </Index>
   );
 }
