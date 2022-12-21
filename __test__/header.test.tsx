@@ -7,7 +7,7 @@ import renderer from 'react-test-renderer';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import '@testing-library/jest-dom';
-import { Header } from '../src/shared/Header';
+import Header from '../src/shared/Header';
 
 describe('Header', () => {
   it('renders correctly', () => {
