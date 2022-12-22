@@ -8,8 +8,9 @@ dotenv.config({
   path: path.resolve(__dirname, `../.env.${process.env.DOTENV}`),
 });
 
-const { SSR_ABORT_DELAY = 10000, ASSETS_MAP_GENERAL } = process.env;
+const { NODE_ENV = 'production', SSR_ABORT_DELAY = 10000 } = process.env;
 
+import fs from 'fs';
 import { Response } from 'express';
 import React, { StrictMode } from 'react';
 import { renderToPipeableStream } from 'react-dom/server';
@@ -17,9 +18,15 @@ import AssetsMap from '../shared/interfaces/AssetsMap';
 import App from '../App';
 
 const isCrawler = false;
+const pathToAssetsMap = path.resolve(
+  __dirname,
+  NODE_ENV === 'production' ? '../assetsMap.json' : '../../dist/assetsMap.json'
+);
 
 export default function render(url: string, response: Response): void {
-  const __ASSETS_MAP: AssetsMap = JSON.parse(ASSETS_MAP_GENERAL).main;
+  const __ASSETS_MAP: AssetsMap = JSON.parse(
+    fs.readFileSync(pathToAssetsMap, 'utf8')
+  ).main;
 
   let didError = false;
   const stream: ReturnType<typeof renderToPipeableStream> =

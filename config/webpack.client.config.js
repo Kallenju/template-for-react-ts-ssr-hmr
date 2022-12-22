@@ -34,8 +34,6 @@ const basePlugins = [
     processOutput(assets) {
       const output = JSON.stringify(assets);
 
-      process.env.ASSETS_MAP_GENERAL = output;
-
       return output;
     },
   }),
