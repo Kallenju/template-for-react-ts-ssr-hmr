@@ -22,9 +22,9 @@ namespace NodeJS {
     readonly NODE_ENV: 'development' | 'production' | 'test';
     readonly BROWSERSLIST_ENV: 'development' | 'production';
     readonly DEV_SERVER_PORT: string;
+    readonly PROD_SERVER_PORT: string;
     readonly HMR_SERVER_PORT: string;
     readonly SSR_ABORT_DELAY: string;
     readonly DOTENV: string;
-    ASSETS_MAP_GENERAL: string;
   }
 }

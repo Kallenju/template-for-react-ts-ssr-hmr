@@ -5,7 +5,7 @@ import dotenv from 'dotenv';
 const __dirname: string = path.dirname(url.fileURLToPath(import.meta.url));
 
 dotenv.config({
-  path: path.resolve(__dirname, `../.env.${process.env.DOTENV}`),
+  path: path.resolve(__dirname, `../.${process.env.DOTENV}.env`),
 });
 
 const { NODE_ENV = 'production', SSR_ABORT_DELAY = 10000 } = process.env;

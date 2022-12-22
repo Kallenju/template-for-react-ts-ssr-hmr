@@ -5,10 +5,14 @@ import dotenv from 'dotenv';
 const __dirname: string = path.dirname(url.fileURLToPath(import.meta.url));
 
 dotenv.config({
-  path: path.resolve(__dirname, `../.env.${process.env.DOTENV}`),
+  path: path.resolve(__dirname, `../.${process.env.DOTENV}.env`),
 });
 
-const { DEV_SERVER_PORT = 3000 } = process.env;
+const {
+  NODE_ENV = 'production',
+  DEV_SERVER_PORT = 3000,
+  PROD_SERVER_PORT = 3000,
+} = process.env;
 
 import express, { Request, Response } from 'express';
 import compress from 'compression';
@@ -23,4 +27,6 @@ app.get('/', (request: Request, response: Response) =>
 
 app.use('/static', express.static('./dist/client'));
 
-app.listen(Number(DEV_SERVER_PORT));
+app.listen(
+  Number(NODE_ENV === 'development' ? DEV_SERVER_PORT : PROD_SERVER_PORT)
+);
